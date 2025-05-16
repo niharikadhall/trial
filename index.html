@@ -285,7 +285,6 @@
             <div class="form-group">
                 <label for="electricitySource">Electricity Source:</label>
                 <select id="electricitySource">
-                    <option value="fossil">Fossil Fuel</option>
                     <option value="renewable">Renewable Energy</option>
                     <option value="non-renewable">Non-Renewable Energy</option>
                 </select>
@@ -333,6 +332,7 @@
                     <label><input type="checkbox" name="formalPractices" value="Carbon Footprint Measurement and Reduction"> Carbon Footprint Measurement and Reduction (1.4)</label>
                     <label><input type="checkbox" name="formalPractices" value="Waste Reduction and Fabric Recycling"> Waste Reduction and Fabric Recycling (1.3)</label>
                     <label><input type="checkbox" name="formalPractices" value="Third-Party Social & Environmental Audits"> Third-Party Social & Environmental Audits (1.1)</label>
+                    <label><input type="checkbox" name="formalPractices" value="Gender Inclusivity"> Gender Inclusivity (1.2)</label>
                     <label><input type="checkbox" name="formalPractices" value="None"> None (0.0)</label>
                 </div>
             </div>
@@ -433,7 +433,6 @@
             <div class="form-group">
                 <label for="informalElectricitySource">Electricity Source:</label>
                 <select id="informalElectricitySource">
-                    <option value="fossil">Fossil Fuel</option>
                     <option value="renewable">Renewable Energy</option>
                     <option value="non-renewable">Non-Renewable Energy</option>
                 </select>
@@ -442,9 +441,14 @@
                 <label>Sustainable Practices:</label>
                 <div class="checkbox-group">
                     <label><input type="checkbox" name="informalPractices" value="Handmade"> Handmade (1.0)</label>
-                    <label><input type="checkbox" name="informalPractices" value="Natural Dyes"> Natural Dyes (0.8)</label>
-                    <label><input type="checkbox" name="informalPractices" value="Local Materials"> Local Materials (0.6)</label>
-                    <label><input type="checkbox" name="informalPractices" value="Low Waste"> Low Waste (0.4)</label>
+                    <label><input type="checkbox" name="informalPractices" value="Natural Dyes Used"> Natural Dyes Used (0.8)</label>
+                    <label><input type="checkbox" name="informalPractices" value="Local Materials Sourced"> Local Materials Sourced (0.6)</label>
+                    <label><input type="checkbox" name="informalPractices" value="Low Waste Generation"> Low Waste Generation (0.4)</label>
+                    <label><input type="checkbox" name="informalPractices" value="Fair Wages Paid"> Fair Wages Paid (1.0)</label>
+                    <label><input type="checkbox" name="informalPractices" value="Safe & Hygienic Working Conditions"> Safe & Hygienic Working Conditions (0.8)</label>
+                    <label><input type="checkbox" name="informalPractices" value="No Child Labor"> No Child Labor (1.0)</label>
+                     <label><input type="checkbox" name="informalPractices" value="Community Employment or Training"> Community Employment or Training (0.6)</label>
+                    <label><input type="checkbox" name="informalPractices" value="Gender Inclusivity"> Gender Inclusivity (1.2)</label>
                     <label><input type="checkbox" name="informalPractices" value="None"> None (0.0)</label>
                 </div>
             </div>
@@ -469,7 +473,7 @@
 
         // Weightage for Electricity Sources (Example - to be updated with actual research data)
         const electricityWeightage = {
-            fossil: 0.7,
+            
             renewable: 0.2,
             'non-renewable': 0.5
         };
@@ -487,7 +491,7 @@
             'Energy Efficiency and Renewable Energy Use': 1.9, 'Chemical Management Compliance': 1.7,
             'Fair Wages and Decent Working Conditions': 1.6, 'No Child or Forced Labor': 2.0,
             'Worker Health, Safety & Well-being': 1.5, 'Carbon Footprint Measurement and Reduction': 1.4,
-            'Waste Reduction and Fabric Recycling': 1.3, 'Third-Party Social & Environmental Audits': 1.1, 'None': 0.0
+            'Waste Reduction and Fabric Recycling': 1.3, 'Third-Party Social & Environmental Audits': 1.1, 'Gender Inclusivity': 1.2, 'None': 0.0
         };
         const formalCriteriaWeights = {
             c1: 0.25,
@@ -500,9 +504,14 @@
         // Informal Weightages
         const informalPracticeWeights = {
             'Handmade': 1.0,
-            'Natural Dyes': 0.8,
-            'Local Materials': 0.6,
-            'Low Waste': 0.4,
+            'Natural Dyes Used': 0.8,
+            'Local Materials Sourced': 0.6,
+            'Low Waste Generation': 0.4,
+            'Fair Wages Paid': 1.0,
+            'Safe & Hygienic Working Conditions': 0.8,
+            'No Child Labor': 1.0,
+            'Community Employment or Training': 0.6,
+            'Gender Inclusivity': 1.2,
             'None': 0.0
         };
         const informalCriteriaWeights = {
@@ -640,7 +649,7 @@
                 }
             };
 
-            const c1Raw = (Math.min(10, Math.round(1 + (data.defectRate / 10))) + Math.min(10, Math.round(1 + (data.rejectionRate / 10)))) /2;
+            const c1Raw = (Math.min(10, Math.round(1 + (data.defectRate / 10))) + Math.min(10, Math.round(1 + (data.rejectionRate / 10)))) / 2;
             const c2Raw = (Math.min(10, Math.round(1 + 9 * ((data.productCost - minMax.productCost.min) / (minMax.productCost.max - minMax.productCost.min)))) +
                 Math.min(10, Math.round(1 + 9 * ((data.transportCost - minMax.transportCost.min) / (minMax.transportCost.max - minMax.transportCost.min))))) / 2;
             const c3Raw = (Math.min(10, Math.round(1 + 9 * ((data.leadTime - minMax.leadTime.min) / (minMax.leadTime.max - minMax.leadTime.min)))) +
@@ -702,7 +711,7 @@
                 fabricType: document.getElementById('informalFabricType').value || '',
                 fabricWeight: parseFloat(document.getElementById('informalFabricWeight').value) || 0,
                 transportMode: document.getElementById('informalTransportMode').value || '',
-                distance: parseFloat(document.getElementById('informalDistance').value) || 0,
+                 distance: parseFloat(document.getElementById('informalDistance').value) || 0,
                 informalElectricitySource: document.getElementById('informalElectricitySource').value || '',
                 practices: Array.from(document.querySelectorAll('input[name="informalPractices"]:checked')).map(input => input.value),
                 timestamp: new Date().toISOString()
